@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Currency Converter in Javascript</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <h1 class="text-center">Youtube Thumbnail Grabber</h1>
+    <form id="form">
+      <div class="form-group">
+        <input type="text" id="url" placeholder="Enter youtube video url" required class="form-control">
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-danger btn-block">Get Thumbnail Image</button>
+      </div>
+    </form>
+    <div id="result">
+      
+    </div>
+</body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+$("#form").submit(function(e){
+  e.preventDefault()
+  var url = $("#url").val()
+  // quality options: low, medium, high, max | default is max.
+var thumbnail = get_youtube_thumbnail(url, 'max');
+console.log(thumbnail);
+$("#result").html(`
+
+<img src="${thumbnail}"/>
+
+`)
+
+})
+
+function get_youtube_thumbnail(url, quality){
+    if(url){
+        var video_id, thumbnail, result;
+        if(result = url.match(/youtube\.com.*(\?v=|\/embed\/)(.{11})/))
+        {
+            video_id = result.pop();
+        }
+        else if(result = url.match(/youtu.be\/(.{11})/))
+        {
+            video_id = result.pop();
+        }
+
+        if(video_id){
+            if(typeof quality == "undefined"){
+                quality = 'high';
+            }
+        
+            var quality_key = 'maxresdefault'; // Max quality
+            if(quality == 'low'){
+                quality_key = 'sddefault';
+            }else if(quality == 'medium'){
+                quality_key = 'mqdefault';
+            } else if (quality == 'high') {
+                quality_key = 'hqdefault';
+            }
+
+            var thumbnail = "http://img.youtube.com/vi/"+video_id+"/"+quality_key+".jpg";
+            return thumbnail;
+        }
+    }
+    return false;
+}
+  </script>
+</html>
